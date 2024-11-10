@@ -79,14 +79,29 @@ const _dirname = path.resolve();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5000',
+  'https://post-7b1k.onrender.com', // Add your Render domain
+  process.env.FRONTEND_URL // Optional: Add from environment variable
+];
+
 // Updated CORS configuration
 app.use(cors({
-  origin: 'https://post-7b1k.onrender.com', // Replace with your frontend's URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
-  credentials: true // Allow credentials if needed
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
-app.use(express.json());
-app.use(express.static(path.join(_dirname, "/frontend/dist")));
 
 // Database connection
 const db = mysql.createConnection({

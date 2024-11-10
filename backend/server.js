@@ -81,8 +81,9 @@ const PORT = process.env.PORT || 5000;
 
 // Updated CORS configuration
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5000'], // Allow both development and production URLs
-  credentials: true
+  origin: 'https://post-7b1k.onrender.com', // Replace with your frontend's URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
+  credentials: true // Allow credentials if needed
 }));
 app.use(express.json());
 app.use(express.static(path.join(_dirname, "/frontend/dist")));

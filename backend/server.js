@@ -80,10 +80,9 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 const allowedOrigins = [
-  'http://localhost:3000',
+ 
   'http://localhost:5000',
   'https://post-7b1k.onrender.com', // Add your Render domain
-  process.env.FRONTEND_URL // Optional: Add from environment variable
 ];
 
 // Updated CORS configuration
